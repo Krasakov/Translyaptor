@@ -1,0 +1,84 @@
+.header {
+    background: #EEDFAC;
+    height: 54px;
+}
+
+.header .menu-links {
+    border-left: 2px solid #D7ECFF;
+    height: 54px;
+    display: inline-block;
+    line-height: 54px;
+    padding: 0 30px;
+    color: #010101;
+}
+
+.header .menu-links:visited,
+.header .menu-links:link {
+    text-decoration: none;
+
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#69acb5+0,30a3b2+50,30a3b2+52,69acb5+100 */
+    background: rgb(105,172,181); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(105,172,181,1) 0%, rgba(48,163,178,1) 50%, rgba(105,172,181,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(105,172,181,1) 0%,rgba(48,163,178,1) 50%, rgba(105,172,181,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(105,172,181,1) 0%,rgba(48,163,178,1) 50%, rgba(105,172,181,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#69acb5', endColorstr='#69acb5',GradientType=0 ); /* IE6-9 */
+}
+
+.header .menu-links:active,
+.header .menu-links:hover {
+    text-decoration: none;
+
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#69acb5+0,30a3b2+50,30a3b2+52,69acb5+100 */
+    background: rgb(48,163,178); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(48,163,178,1) 0%, rgba(105,172,181,1) 50%, rgba(48,163,178,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(48,163,178,1) 0%,rgba(105,172,181,1) 50%,rgba(48,163,178,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(48,163,178,1) 0%,rgba(105,172,181,1) 50%,rgba(48,163,178,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#69acb5', endColorstr='#69acb5',GradientType=0 ); /* IE6-9 */
+}
+
+.header .menu-links:last-child {
+    border-right: 2px solid #D7ECFF;
+}
+
+.header .authorization-links {
+    display: inline-block;
+    line-height: 54px;
+    padding: 0 10px;
+}
+
+.header .authorization-links:active,
+.header .authorization-links:hover,
+.header .authorization-links:visited,
+.header .authorization-links:link {
+    text-decoration: none;
+}
+
+.main {
+    background-color: #efefe4;
+    height: 600px;
+}
+
+.footer {
+    background-color: #EEDFAC;
+}
+
+.footer .info-links {
+    display: block;
+    color: #6c757d;
+    padding-left: 25px;
+}
+
+.footer .info-links:first-child {
+    padding-top: 25px;
+}
+
+.footer .info-links:last-child {
+    padding-bottom: 25px;
+}
+
+.footer .info-links:active,
+.footer .info-links:hover,
+.footer .info-links:visited,
+.footer .info-links:link {
+    text-decoration: none;
+}
