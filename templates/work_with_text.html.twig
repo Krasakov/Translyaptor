@@ -9,7 +9,7 @@
             <a class="menu-links" href="#">List</a>
         </div>
         <div class="col-9 offset-1">
-            <form id="firstForm">
+            <form id="form">
                 <textarea class="form-control" rows="12" id="firstTextarea" required placeholder="Enter text for translate"></textarea>
                 <input type="submit" value="Handle text">
             </form>
@@ -19,17 +19,17 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $('#firstForm').on( "submit", function( event ) {
+        $('#form').on( "submit", function( event ) {
             event.preventDefault();
             event.stopPropagation();
-            var arrayWords = $('#firstTextarea').val().toLowerCase().split(/[«»!, .\s-\d+]/).sort();
+            var text = $('#firstTextarea').val();
             $.ajax({
                 url: '{{ path('handle_text') }}',
                 method: 'post',
                 dateType: 'json',
-                data: {'arrayWords': arrayWords},
+                data: {'text': text},
                 success: function(data){
-                    $('#secondTextarea').val(data['string']);
+                    $('#secondTextarea').val(data['word']);
                 }
             });
         });

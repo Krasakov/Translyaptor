@@ -25,11 +25,11 @@ class VocabularyController extends AbstractController
      */
     public function handleText(Request $request)
     {
-        $arrayWords = $request->request->get('arrayWords');
-        $string = implode(", ", $arrayWords);
+        $text = $request->request->get('text');
+        $word = $text;
 
         return new JsonResponse([
-            'string' => $string,
+            'word' => $word,
         ]);
     }
 }
