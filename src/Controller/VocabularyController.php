@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class VocabularyController extends AbstractController
@@ -12,22 +14,22 @@ class VocabularyController extends AbstractController
      */
     public function index()
     {
-        return $this->render('base.html.twig');
-    }
-
-    /**
-     * @Route(path="/create", methods={"GET", "POST"}, name="create_words")
-     */
-    public function create()
-    {
         return $this->render('work_with_text.html.twig');
     }
 
     /**
-     * @Route(path="/lesson", methods={"GET"}, name="lesson")
+     * @Route(path="/handle", methods={"POST"}, name="handle_text")
+     *
+     * @param Request $request
+     * @return Response
      */
-    public function lesson()
+    public function handleText(Request $request)
     {
-        return $this->render('lessons.html.twig');
+        $arrayWords = $request->request->get('arrayWords');
+        $string = implode(", ", $arrayWords);
+
+        return new JsonResponse([
+            'string' => $string,
+        ]);
     }
 }

@@ -8,9 +8,30 @@
             <a class="menu-links" href="#">Add new</a>
             <a class="menu-links" href="#">List</a>
         </div>
-        <div class="col-9 offset-1" style="padding: 15px">
-            <form method="post">
-                <textarea class="form-control" rows="20"></textarea>
+        <div class="col-9 offset-1">
+            <form id="firstForm">
+                <textarea class="form-control" rows="12" id="firstTextarea" required placeholder="Enter text for translate"></textarea>
+                <input type="submit" value="Handle text">
             </form>
+            <textarea class="form-control" rows="12" id="secondTextarea" required></textarea>
         </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#firstForm').on( "submit", function( event ) {
+            event.preventDefault();
+            event.stopPropagation();
+            var arrayWords = $('#firstTextarea').val().toLowerCase().split(/[«»!, .\s-\d+]/).sort();
+            $.ajax({
+                url: '{{ path('handle_text') }}',
+                method: 'post',
+                dateType: 'json',
+                data: {'arrayWords': arrayWords},
+                success: function(data){
+                    $('#secondTextarea').val(data['string']);
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,3 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html,
+body {
+    height: 100%;
+}
+.container {
+    position: relative;
+    min-height: 100%;
+    background-color: #efefe4;
+}
+
 .header {
     background: #EEDFAC;
     height: 54px;
@@ -54,12 +68,21 @@
 }
 
 .main {
-    background-color: #efefe4;
-    height: 600px;
+    padding-bottom: 160px;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 140px;
+    background: #EEDFAC;
 }
 
 .footer {
-    background-color: #EEDFAC;
+    margin: 20px;
+    height: 100px;
 }
 
 .footer .info-links {
@@ -69,7 +92,7 @@
 }
 
 .footer .info-links:first-child {
-    padding-top: 25px;
+    padding-top: 15px;
 }
 
 .footer .info-links:last-child {
@@ -81,4 +104,9 @@
 .footer .info-links:visited,
 .footer .info-links:link {
     text-decoration: none;
+}
+.css-copyright {
+    padding-top: 15px;
+    font-size: 11pt;
+    color: #6c757d;
 }
