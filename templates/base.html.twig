@@ -8,18 +8,20 @@
             <link rel="stylesheet" href="{{ asset('css/base.css') }}">
         {% endblock %}
         <title>{% block title %}Translyaptor{% endblock %}</title>
+        <style>
+        </style>
     </head>
     <body>
         <div class="container">
             <header>
                 <div class="row header">
                     <div class="col-2">
-                        <a class="btn" href="{{ path('index') }}" role="button">LOGO</a>
+                        <a class="btn" style="color: red" href="{{ path('index') }}" role="button">LOGO</a>
                     </div>
                     <div class="col-8 text-center">
                         <a
                             class="menu-links"
-                            href="{{ path('index') }}">Work with text
+                            href="{{ path('create_words') }}">Work with text
                         </a><a
                             class="menu-links"
                             href="#">Work with words
@@ -45,13 +47,13 @@
                 </div>
             </main>
             <footer>
-                <div class="footer row">
+                <div class="row footer">
                     <div class="col-2">
                         <a class="info-links" href="#">About us</a>
                         <a class="info-links" href="#">Contact us</a>
                         <a class="info-links" href="#">Terms of use</a>
                     </div>
-                    <div class="col-2 offset-8 text-right css-copyright">
+                    <div class="col-2 offset-8 text-right" style="padding-top: 70px; font-size: 11pt; color: #6c757d">
                         &#169 2020
                     </div>
                 </div>
@@ -60,7 +62,8 @@
         {% block javascripts %}
             <script src="{{ asset('js/jquery-3.5.0.min.js') }}" crossorigin="anonymous"></script>
             <script src="{{ asset('js/popper.min.js') }}" crossorigin="anonymous"></script>
-            <script src="{{ asset('js/bootstrap.min.js') }}" crossorigin="anonymous"></script>
+            <script src="{{ asset('js/bootstrap.min.js') }}" crossorigin="anonymous">
+            </script>
         {% endblock %}
     </body>
 </html>
