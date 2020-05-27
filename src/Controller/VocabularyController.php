@@ -16,14 +16,6 @@ class VocabularyController extends AbstractController
     }
 
     /**
-     * @Route(path="/create", methods={"GET", "POST"}, name="create_words")
-     */
-    public function create()
-    {
-        return $this->render('work_with_text.html.twig');
-    }
-
-    /**
      * @Route(path="/lesson", methods={"GET"}, name="lesson")
      */
     public function lesson()

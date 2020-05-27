@@ -3,9 +3,9 @@ namespace App\Service;
 
 class TextProcessing
 {
-    public function getHandlerText($text)
+    public function processing($text)
     {
-        $words = preg_split("/[\s,.\d]+/", strtolower(trim($text)));
+        $words = preg_split("/[\s,.]+/", strtolower(trim($text)));
 
         return $words;
     }
