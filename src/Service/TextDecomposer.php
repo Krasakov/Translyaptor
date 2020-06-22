@@ -12,13 +12,17 @@ class TextDecomposer
      */
     public function splitTextIntoWords(TextItem $textItem): array
     {
-        $words = preg_split("/[\s,.]+/", strtolower(trim($textItem->getText())));
+        $splitWords = preg_split("/[^a-z]/is", strtolower(trim($textItem->getText())));
 
-        $wordsObj = [];
-        foreach ($words as $word) {
-           $wordsObj[] = new WordItem($word);
+        $words = [];
+        foreach ($splitWords as $word) {
+            if (strlen($word) <= 2) {
+                continue;
+            }
+
+            $words[] = new WordItem($word);
         }
 
-        return $wordsObj;
+        return $words;
     }
 }

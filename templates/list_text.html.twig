@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/text-list.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="col-12">
+        <div class="css-button-add-new">
+            <a class="btn btn-success btn-sm" href="{{ path('create_text') }}">Add new text</a>
+        </div>
+        <div>
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th class="text-center">Text</th>
+                    <th class="text-center">Word count</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Action</th>
+                </tr>
+                {% for text in texts %}
+                        <tr>
+                            <td class="css-td-text">
+                                {% if text.text|length > 197 %}
+                                    {{ text.text|slice(0, 197) ~ ' . . .' }}
+                                {% else %}
+                                    {{ text.text }}
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {{ text.number }}
+                            </td>
+                            <td class="text-center css-td-date">
+                                {{ text.createdAt.format('H:i:s d-m-Y') }}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ path('text_details', {'id': text.id}) }}"><i class="fa fa-pencil-alt"></i></a>
+                                <a class="css-pencil" href="{{ path('text_delete', {'id': text.id}) }}"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

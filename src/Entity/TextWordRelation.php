@@ -3,14 +3,17 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity()
+ */
 class TextWordRelation
 {
     /**
      * @var TextItem
      *
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="App\Entity\TextItem", inversedBy="words")
-     * @ORM\JoinColumn(name="text_item_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\TextItem", inversedBy="wordsRelations")
+     * @ORM\JoinColumn(name="text_item_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $textItem;
 
@@ -18,7 +21,7 @@ class TextWordRelation
      * @var WordItem
      *
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity="App\Entity\WordItem", inversedBy="texts")
+     * @ORM\ManyToOne(targetEntity="App\Entity\WordItem", inversedBy="textsRelations")
      * @ORM\JoinColumn(name="word_item_id", referencedColumnName="id", nullable=false)
      */
     private $wordItem;

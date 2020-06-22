@@ -10,11 +10,6 @@ use Doctrine\ORM\Mapping;
 class TextWordRelationRepository extends EntityRepository
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -25,16 +20,16 @@ class TextWordRelationRepository extends EntityRepository
     /**
      * @param TextWordRelation $relation
      */
-    public function createRelationOrIncreaseCounter($relation): void
+    public function createRelationOrIncreaseCounter(TextWordRelation $relation): void
     {
         $textItemId = $relation->getText()->getId();
         $wordItemId = $relation->getWord()->getId();
 
-        $conn = $this->em->getConnection();
+        $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare('
-            INSERT INTO word_text_relation(text_item_id, word_item_id, `count`)
+            INSERT INTO text_word_relation(text_item_id, word_item_id, `count`)
             VALUES (:textItemId, :wordItemId, 1)
-            ON DUPLICATE `count` = `count` + 1
+            ON DUPLICATE KEY UPDATE `count` = `count` + 1
         ');
 
         $stmt->bindValue('textItemId', $textItemId);

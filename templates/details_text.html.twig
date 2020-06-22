@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/details.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="col-12">
+       <p>{{ textItem.text }}</p>
+    </div>
+    <div class="col-12">
+        <ul class="nav nav-tabs nav-fill" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a
+                    class="nav-link active"
+                    id="new-tab"
+                    data-toggle="tab"
+                    href="#new"
+                    role="tab"
+                    aria-controls="new"
+                    aria-selected="true">New</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a
+                    class="nav-link"
+                    id="existed-tab"
+                    data-toggle="tab"
+                    href="#existed"
+                    role="tab"
+                    aria-controls="existed"
+                    aria-selected="false">Existed</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a
+                    class="nav-link"
+                    id="blacklisted-tab"
+                    data-toggle="tab"
+                    href="#blacklisted"
+                    role="tab"
+                    aria-controls="blacklisted"
+                    aria-selected="false">Blacklisted</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="new" role="tabpanel" aria-labelledby="new-tab">
+                <form method="post" action="{{ path('move_to_black_list_bulk', {'text' :textItem.id}) }}">
+                    <div class="float-right css-button">
+                        <button class="btn btn-success js-move-to-black-list">Move to Blacklist</button>
+                    </div>
+                    <div class="clearfix"></div>
+                    <table class="table table-sm table-striped table-hover js-table">
+                        <tr>
+                            <th><input class="js-word-checkbox-all" type="checkbox"></th>
+                            <th>Words</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    {% for word in wordsAggregator.newWords %}
+                        <tr>
+                            <td><input
+                                    class="js-word-checkbox"
+                                    type="checkbox"
+                                    name="wordIds[]"
+                                    value="{{ word.id }}"
+                                    id="word-{{ word.id }}"
+                                    data-word-id="{{ word.id }}"></td>
+                            <td>{{ word.name }}</td>
+                            <td class="text-center">
+                                <a href="{{ path('move_to_black_list', {'word' :word.id, 'text' :textItem.id }) }}">
+                                    <i class="fa fa-ban"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </form>
+                <div class="text-center">
+                    <a class="btn btn-secondary" href="{{ path('text_list') }}" role="button">Back to texts</a>
+                </div>
+            </div>
+            <div class="tab-pane" id="existed" role="tabpanel" aria-labelledby="existed-tab">
+                <form method="post" action="{{ path('move_to_black_list_bulk', {'text' :textItem.id}) }}">
+                    <div class="float-right css-button">
+                        <button class="btn btn-success js-move-to-black-list">Move to Blacklist</button>
+                    </div>
+                    <div class="clearfix"></div>
+                    <table class="table table-sm table-striped table-hover js-table">
+                        <tr>
+                            <th><input class="js-word-checkbox-all" type="checkbox"></th>
+                            <th>Word</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                        {% for word in wordsAggregator.existedWords %}
+                            <tr>
+                                <td><input
+                                        class="js-word-checkbox"
+                                        type="checkbox"
+                                        name="wordIds[]"
+                                        value="{{ word.id }}"
+                                        id="word-{{ word.id }}"
+                                        data-word-id="{{ word.id }}"></td>
+                                <td>{{ word.name }}</td>
+                                <td class="text-center">
+                                    <a href="{{ path('move_to_black_list', {'word' :word.id, 'text' :textItem.id }) }}">
+                                        <i class="fa fa-ban"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </form>
+                <div class="text-center">
+                    <a class="btn btn-secondary" href="{{ path('text_list') }}" role="button">Back to texts</a>
+                </div>
+            </div>
+            <div class="tab-pane" id="blacklisted" role="tabpanel" aria-labelledby="blacklisted-tab">
+                <form method="post" action="{{ path('move_from_black_list_bulk', {'text' :textItem.id}) }}">
+                    <div class="float-right css-button">
+                        <button class="btn btn-danger js-remove">Move from Blacklist</button>
+                    </div>
+                    <div class="clearfix"></div>
+                    <table class="table table-sm table-striped table-hover js-table js-table-remove">
+                        <tr>
+                            <th><input class="js-word-checkbox-all" type="checkbox"></th>
+                            <th>Word</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                        {% for word in wordsAggregator.blacklistedWords %}
+                            <tr>
+                                <td><input
+                                        class="js-word-checkbox"
+                                        type="checkbox"
+                                        name="wordIds[]"
+                                        value="{{ word.id }}"
+                                        id="word-{{ word.id }}"
+                                        data-word-id="{{ word.id }}"></td>
+                                <td>{{ word.name }}</td>
+                                <td class="text-center">
+                                    <a href="{{ path('move_from_black_list', {'word' :word.id, 'text' :textItem.id }) }}">
+                                        <i class="fa fa-reply"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </form>
+                <div class="text-center">
+                    <a class="btn btn-secondary" href="{{ path('text_list') }}" role="button">Back to texts</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent () }}
+    <script>
+        let all = $('.js-word-checkbox-all');
+        let children = $('.js-word-checkbox');
+
+        $('.js-table tr').on('click', function () {
+            let checkbox = $(this).find('.js-word-checkbox');
+            checkbox.prop('checked', !checkbox.is(':checked'));
+        });
+
+        let bindChildren = function () {
+            children.on('click', function (e) {
+                e.stopPropagation();
+            });
+
+            children.on('change', function (e) {
+                let context = $(this).closest('.js-table');
+                let subChildren = context.find('.js-word-checkbox');
+                let subAll = context.find('.js-word-checkbox-all');
+
+                let isAllChildrenChecked = subChildren.length === subChildren.filter(':checked').length;
+                subAll.off('change');
+                subAll.prop('checked', isAllChildrenChecked);
+                bindAll();
+            });
+        };
+
+        let bindAll = function () {
+            all.on('change', function () {
+                let isAllChecked = $(this).is(':checked');
+                let context = $(this).closest('.js-table');
+                let subChildren = context.find('.js-word-checkbox');
+
+                subChildren.off('change');
+                subChildren.each(function () {
+                    $(this).prop('checked', isAllChecked);
+                });
+                bindChildren();
+            });
+        };
+
+        let init = function () {
+            bindAll();
+            bindChildren();
+        };
+
+        init();
+    </script>
+{% endblock %}

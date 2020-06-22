@@ -36,6 +36,22 @@ class TextApp
     }
 
     /**
+     * @return array
+     */
+    public function getCountWordsForText(): array
+    {
+        return $this->textRepo->getTextsWithCount();
+    }
+
+    /**
+     * @return TextItem[]|array
+     */
+    public function listText(): array
+    {
+        return $this->textRepo->findAll();
+    }
+
+    /**
      * @param $text
      * @return TextItem
      */
@@ -51,6 +67,25 @@ class TextApp
             $this->em->commit();
 
             return $textItem;
+        } catch (\Throwable $e) {
+            $this->em->rollback();
+
+            throw $e;
+        }
+    }
+
+    /**
+     * @param TextItem $textItem
+     * @throws \Throwable
+     */
+    public function deleteTextWithWords(TextItem $textItem): void
+    {
+        $this->em->beginTransaction();
+        try {
+            $this->textRepo->deleteText($textItem);
+            $this->wordApp->deleteWordsOfText();
+
+            $this->em->commit();
         } catch (\Throwable $e) {
             $this->em->rollback();
 

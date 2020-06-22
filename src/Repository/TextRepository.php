@@ -9,11 +9,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 class TextRepository extends EntityRepository
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -22,32 +17,37 @@ class TextRepository extends EntityRepository
     }
 
     /**
-     * @param $id
-     * @return TextItem $text
+     * @return array
      */
-    public function getTextById($id): TextItem
+    public function getTextsWithCount(): array
     {
-        $text = $this->find($id);
+        $qb = $this->createQueryBuilder('t');
 
-        return $text;
+        $qb
+            ->select('t.id, t.text, t.createdAt, SUM(r.count) as number')
+            ->leftJoin('t.wordsRelations', 'r')
+            ->groupBy('t.id');
+
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
     }
 
     /**
-     * @return TextItem[] array
+     * @param TextItem $textItem
      */
-    public function getTexts(): array
+    public function saveText(TextItem $textItem): void
     {
-        $texts = $this->findAll();
-
-        return $texts;
+        $this->getEntityManager()->persist($textItem);
+        $this->getEntityManager()->flush();
     }
 
     /**
-     * @param TextItem $text
+     * @param TextItem $textItem
      */
-    public function saveText($text): void
+    public function deleteText(TextItem $textItem): void
     {
-        $this->em->persist($text);
-        $this->em->flush();
+        $this->getEntityManager()->remove($textItem);
+        $this->getEntityManager()->flush();
     }
 }

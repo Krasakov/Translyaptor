@@ -21,16 +21,23 @@ class TextItem
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="text")
      */
     private $text;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @var ArrayCollection|TextWordRelation[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\TextWordRelation", mappedBy="wordItem")
+     * @ORM\OneToMany(targetEntity="App\Entity\TextWordRelation", mappedBy="textItem")
      */
-    private $words;
+    private $wordsRelations;
 
     /**
      * @param string $text
@@ -38,7 +45,8 @@ class TextItem
     public function __construct(string $text)
     {
         $this->text = $text;
-        $this->words = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->wordsRelations = new ArrayCollection();
     }
 
     /**
@@ -55,5 +63,26 @@ class TextItem
     public function getText(): string
     {
         return $this->text;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function trunc(): string
+    {
+        $text = $this->text;
+        if (strlen($text) > 200) {
+            $text = substr($text, 0, 200) . '... .';
+        }
+
+        return $text;
     }
 }
