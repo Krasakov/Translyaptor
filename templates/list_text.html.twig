@@ -19,8 +19,8 @@
                 {% for text in texts %}
                         <tr>
                             <td class="css-td-text">
-                                {% if text.text|length > 197 %}
-                                    {{ text.text|slice(0, 197) ~ ' . . .' }}
+                                {% if text.text|length > 195 %}
+                                    {{ text.text|slice(0, 195) ~ ' . . .' }}
                                 {% else %}
                                     {{ text.text }}
                                 {% endif %}

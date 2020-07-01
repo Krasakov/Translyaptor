@@ -4,7 +4,10 @@ namespace App\Controller;
 use App\Application\WordApp;
 use App\Entity\TextItem;
 use App\Entity\WordItem;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +22,7 @@ class WordController extends AbstractController
      * @param WordApp $wordApp
      * @return Response
      */
-    public function showWords(WordApp $wordApp)
+    public function showWords(WordApp $wordApp): Response
     {
         $words = $wordApp->getListWords();
 
@@ -33,7 +36,7 @@ class WordController extends AbstractController
      * @param WordItem $word
      * @return Response
      */
-    public function moveToBlackList(WordApp $wordApp, TextItem $text, WordItem $word)
+    public function moveToBlackList(WordApp $wordApp, TextItem $text, WordItem $word): Response
     {
         $wordApp->moveToBlackList($word);
 
@@ -47,7 +50,7 @@ class WordController extends AbstractController
      * @param WordItem $word
      * @return Response
      */
-    public function moveFromBlackList(WordApp $wordApp, TextItem $text, WordItem $word)
+    public function moveFromBlackList(WordApp $wordApp, TextItem $text, WordItem $word): Response
     {
         $wordApp->moveFromBlackList($word);
 
@@ -60,8 +63,10 @@ class WordController extends AbstractController
      * @param WordApp $wordApp
      * @param TextItem $text
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function moveToBlackListBulk(Request $request, WordApp $wordApp, TextItem $text)
+    public function moveToBlackListBulk(Request $request, WordApp $wordApp, TextItem $text): Response
     {
         $wordIds = $request->request->get('wordIds', []);
         $wordApp->moveToBlackListBulk($wordIds);
@@ -75,8 +80,11 @@ class WordController extends AbstractController
      * @param WordApp $wordApp
      * @param TextItem $text
      * @return Response
+     * @return RedirectResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function moveFromBlackListBulk(Request $request, WordApp $wordApp, TextItem $text)
+    public function moveFromBlackListBulk(Request $request, WordApp $wordApp, TextItem $text): RedirectResponse
     {
         $wordIds = $request->request->get('wordIds', []);
         $wordApp->moveFromBlackListBulk($wordIds);

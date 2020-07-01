@@ -43,6 +43,17 @@
                 </div>
             </header>
             <main>
+                <div class="row">
+                    <div class="col-12">
+                        {% for type, messages in app.flashes() %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{type}}" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
                 <div class="row main">
                     {% block body %}{% endblock %}
                 </div>

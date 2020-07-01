@@ -2,9 +2,10 @@
 namespace App\Application;
 
 use App\Entity\TextItem;
-use App\Entity\WordItem;
+use App\Exception\ValidationException;
 use App\Repository\TextRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TextApp
 {
@@ -24,15 +25,27 @@ class TextApp
     private $em;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * @param TextRepository $textRepo
      * @param WordApp $wordApp
      * @param EntityManagerInterface $em
+     * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $em, TextRepository $textRepo, WordApp $wordApp)
+    public function __construct(
+        EntityManagerInterface $em,
+        TextRepository $textRepo,
+        WordApp $wordApp,
+        ValidatorInterface $validator
+    )
     {
         $this->textRepo = $textRepo;
         $this->wordApp = $wordApp;
         $this->em = $em;
+        $this->validator = $validator;
     }
 
     /**
@@ -52,12 +65,18 @@ class TextApp
     }
 
     /**
-     * @param $text
+     * @param string $text
      * @return TextItem
+     * @throws \Throwable
      */
-    public function processText($text): TextItem
+    public function processText(string $text): TextItem
     {
         $textItem = new TextItem($text);
+        $constraints = $this->validator->validate($textItem);
+
+        if ($constraints->count()) {
+            throw new ValidationException($constraints);
+        }
 
         $this->em->beginTransaction();
         try {

@@ -4,6 +4,8 @@ namespace App\Controller;
 use App\Application\TextApp;
 use App\Application\WordApp;
 use App\Entity\TextItem;
+use App\Exception\ValidationException;
+use App\Form\TextFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,17 +18,38 @@ class TextController extends AbstractController
      * @param Request $request
      * @param TextApp $textApp
      * @return Response
+     * @throws \Exception
      */
-    public function create(Request $request, TextApp $textApp)
+    public function createWithForm(Request $request, TextApp $textApp): Response
     {
+        $form = $this->createForm(TextFormType::class, new TextItem(''));
+
         if ($request->isMethod('POST')) {
-            $text = $request->request->get('text');
-            $textItem = $textApp->processText($text);
+            try {
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    /** @var TextItem $textItem */
+                    $textItem = $form->getData();
+                    $textItem = $textApp->processText($textItem->getText());
+                }
+            } catch (ValidationException $e) {
+                foreach ($e->getMessages() as $message) {
+                    $this->addFlash('danger', $message);
+                }
+
+                return $this->redirectToRoute('create_text');
+            } catch (\Throwable $e) {
+                    $this->addFlash('danger', 'Something went wrong!' . $e->getMessage());
+
+                return $this->redirectToRoute('create_text');
+            }
+
+            $this->addFlash('success', 'Text saved successful!');
 
             return $this->redirectToRoute('text_details', ['id' => $textItem->getId()]);
         }
 
-        return $this->render('work_with_text.html.twig');
+        return $this->render('work_with_text.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -34,7 +57,7 @@ class TextController extends AbstractController
      * @param TextApp $textApp
      * @return Response
      */
-    public function list(TextApp $textApp)
+    public function list(TextApp $textApp): Response
     {
         $texts = $textApp->getCountWordsForText();
 
@@ -50,7 +73,7 @@ class TextController extends AbstractController
      * @return Response
      * @throws \Throwable
      */
-    public function delete(TextApp $textApp, TextItem $textItem)
+    public function delete(TextApp $textApp, TextItem $textItem): Response
     {
         $textApp->deleteTextWithWords($textItem);
 
@@ -63,7 +86,7 @@ class TextController extends AbstractController
      * @param TextItem $textItem
      * @return Response
      */
-    public function details(WordApp $wordApp, TextItem $textItem)
+    public function details(WordApp $wordApp, TextItem $textItem): Response
     {
         $wordsAggregator = $wordApp->getSeparatedWordsForText($textItem);
 

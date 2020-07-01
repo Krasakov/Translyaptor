@@ -1,12 +1,15 @@
 <?php
 namespace App\Repository;
 
+use App\Application\WordCollection;
 use App\Entity\TextItem;
 use App\Entity\WordItem;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
-use function Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 
 class WordRepository extends EntityRepository
 {
@@ -97,12 +100,13 @@ class WordRepository extends EntityRepository
     }
 
     /**
-     * @param WordItem[] $words
+     * @param WordCollection $wordCollection
+     * @throws DBALException
      */
-    public function saveNotExistedWords($words): void
+    public function saveNotExistedWords(WordCollection $wordCollection): void
     {
         $values = [];
-        foreach ($words as $word) {
+        foreach ($wordCollection->getWords() as $word) {
             $values[] = $word->getName();
         }
 
@@ -118,6 +122,8 @@ class WordRepository extends EntityRepository
 
     /**
      * @param WordItem $wordItem
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(WordItem $wordItem)
     {
@@ -140,8 +146,6 @@ class WordRepository extends EntityRepository
     /**
      * @param int[] $wordIds
      * @param bool $isBlackListed
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function updateBlackListStatus(array $wordIds, bool $isBlackListed): void
     {

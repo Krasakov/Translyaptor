@@ -5,6 +5,8 @@ use App\Entity\TextItem;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 
 class TextRepository extends EntityRepository
 {
@@ -35,6 +37,8 @@ class TextRepository extends EntityRepository
 
     /**
      * @param TextItem $textItem
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function saveText(TextItem $textItem): void
     {
@@ -44,6 +48,8 @@ class TextRepository extends EntityRepository
 
     /**
      * @param TextItem $textItem
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function deleteText(TextItem $textItem): void
     {

@@ -5,13 +5,13 @@
 {% endblock %}
 {% block body %}
         <div class="col-12">
-            <form id="form" method="post" action="{{ path('create_text') }}">
-                <textarea class="form-control css-textarea" name="text" rows="30" minlength="3" placeholder="Enter text..." required></textarea>
-                <div class="float-right">
-                    <a class="btn btn-secondary" href="{{ path('text_list') }}">Cancel</a>
-                    <input class="btn btn-primary" type="submit" value="Send">
-                </div>
-                <div class="clearfix"></div>
-            </form>
+            {{ form_start(form, {'method': 'post'}) }}
+            {{ form_rest(form) }}
+            <div class="float-right">
+                <a class="btn btn-secondary" href="{{ path('text_list') }}">Cancel</a>
+                <input class="btn btn-primary" type="submit" value="Send">
+            </div>
+            <div class="clearfix"></div>
+            {{ form_end(form) }}
         </div>
 {% endblock %}

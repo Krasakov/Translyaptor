@@ -63,6 +63,10 @@ body {
     text-decoration: none;
 }
 
+main {
+    padding-top: 20px;
+}
+
 .main {
     padding-bottom: 160px;
 }

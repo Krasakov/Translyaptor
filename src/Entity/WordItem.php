@@ -72,9 +72,6 @@ class WordItem
         return $this->blackListed;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function markBlackListed(): void
     {
         $this->blackListed = true;

@@ -3,6 +3,7 @@ namespace App\Repository;
 
 use App\Entity\TextItem;
 use App\Entity\TextWordRelation;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
@@ -19,6 +20,7 @@ class TextWordRelationRepository extends EntityRepository
 
     /**
      * @param TextWordRelation $relation
+     * @throws DBALException
      */
     public function createRelationOrIncreaseCounter(TextWordRelation $relation): void
     {

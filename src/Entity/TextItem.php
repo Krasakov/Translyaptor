@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TextRepository")
@@ -22,6 +23,8 @@ class TextItem
      * @var string
      *
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Text can not be empty")
+     * @Assert\Length(min="3", minMessage="Text should be more than 3 letters")
      */
     private $text;
 
@@ -41,6 +44,7 @@ class TextItem
 
     /**
      * @param string $text
+     * @throws \Exception
      */
     public function __construct(string $text)
     {
@@ -66,23 +70,18 @@ class TextItem
     }
 
     /**
+     * @param string $text
+     */
+    public function setText(string $text): void
+    {
+        $this->text = $text;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
-    }
-
-    /**
-     * @return string
-     */
-    public function trunc(): string
-    {
-        $text = $this->text;
-        if (strlen($text) > 200) {
-            $text = substr($text, 0, 200) . '... .';
-        }
-
-        return $text;
     }
 }

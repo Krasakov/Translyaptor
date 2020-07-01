@@ -4,9 +4,13 @@ namespace App\Application;
 use App\Entity\TextItem;
 use App\Entity\TextWordRelation;
 use App\Entity\WordItem;
+use App\Exception\ValidationException;
 use App\Repository\TextWordRelationRepository;
 use App\Repository\WordRepository;
 use App\Service\TextDecomposer;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class WordApp
 {
@@ -26,15 +30,27 @@ class WordApp
     private $textWordRelationRepo;
 
     /**
-     * @param TextDecomposer $textDecomposer
-     * @param WordRepository $wordRepo
-     * @param TextWordRelationRepository $textWordRelationRepo
+     * @var ValidatorInterface
      */
-    public function __construct(TextDecomposer $textDecomposer, WordRepository $wordRepo, TextWordRelationRepository $textWordRelationRepo)
+    private $validator;
+
+    /**
+     * @param TextDecomposer             $textDecomposer
+     * @param WordRepository             $wordRepo
+     * @param TextWordRelationRepository $textWordRelationRepo
+     * @param ValidatorInterface         $validator
+     */
+    public function __construct(
+        TextDecomposer $textDecomposer,
+        WordRepository $wordRepo,
+        TextWordRelationRepository $textWordRelationRepo,
+        ValidatorInterface $validator
+    )
     {
         $this->textDecomposer = $textDecomposer;
         $this->wordRepo = $wordRepo;
         $this->textWordRelationRepo = $textWordRelationRepo;
+        $this->validator = $validator;
     }
 
     /**
@@ -72,10 +88,15 @@ class WordApp
      */
     public function processText(TextItem $textItem): void
     {
-        $words = $this->textDecomposer->splitTextIntoWords($textItem);
-        $this->wordRepo->saveNotExistedWords($words);
+        $wordCollection = $this->textDecomposer->splitTextIntoWords($textItem);
+        $constraints = $this->validator->validate($wordCollection);
+        if ($constraints->count()) {
+            throw new ValidationException($constraints);
+        }
 
-        foreach ($words as $word) {
+        $this->wordRepo->saveNotExistedWords($wordCollection);
+
+        foreach ($wordCollection->getWords() as $word) {
             /** @var WordItem $word */
             $word = $this->wordRepo->findOneBy(['name' => $word->getName()]);
             $relation = new TextWordRelation($textItem, $word);
@@ -103,8 +124,8 @@ class WordApp
 
     /**
      * @param int[] $wordIds
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function moveToBlackListBulk(array $wordIds): void
     {
@@ -116,8 +137,8 @@ class WordApp
 
     /**
      * @param int[] $wordIds
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function moveFromBlackListBulk(array $wordIds): void
     {
