@@ -16,7 +16,7 @@ class Cat
     private int $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=false, length=255)
      */
     private string $email;
 
