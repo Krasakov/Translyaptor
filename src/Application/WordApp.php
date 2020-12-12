@@ -3,11 +3,14 @@ namespace App\Application;
 
 use App\Entity\TextItem;
 use App\Entity\TextWordRelation;
+use App\Entity\WordAlias;
 use App\Entity\WordItem;
 use App\Exception\ValidationException;
 use App\Repository\TextWordRelationRepository;
+use App\Repository\WordAliasRepository;
 use App\Repository\WordRepository;
 use App\Service\TextDecomposer;
+use App\Service\WordConversion;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -18,6 +21,16 @@ class WordApp
      * @var TextDecomposer
      */
     private $textDecomposer;
+
+    /**
+     * @var WordConversion
+     */
+    private $wordConversion;
+
+    /**
+     * @var WordAliasRepository
+     */
+    private $wordAliasRepo;
 
     /**
      * @var WordRepository
@@ -36,18 +49,24 @@ class WordApp
 
     /**
      * @param TextDecomposer             $textDecomposer
+     * @param WordConversion             $wordConversion
+     * @param WordAliasRepository        $wordAliasRepo
      * @param WordRepository             $wordRepo
      * @param TextWordRelationRepository $textWordRelationRepo
      * @param ValidatorInterface         $validator
      */
     public function __construct(
         TextDecomposer $textDecomposer,
+        WordConversion $wordConversion,
+        WordAliasRepository $wordAliasRepo,
         WordRepository $wordRepo,
         TextWordRelationRepository $textWordRelationRepo,
         ValidatorInterface $validator
     )
     {
         $this->textDecomposer = $textDecomposer;
+        $this->wordConversion = $wordConversion;
+        $this->wordAliasRepo = $wordAliasRepo;
         $this->wordRepo = $wordRepo;
         $this->textWordRelationRepo = $textWordRelationRepo;
         $this->validator = $validator;
@@ -81,6 +100,19 @@ class WordApp
             $this->wordRepo->getExistedWordsForText($textItem),
             $this->wordRepo->getBlacklistedWordsForText($textItem)
         );
+
+    }
+
+    /**
+     * @param TextItem $textItem
+     * @return WordAlias[]
+     */
+    public function getAliasForText(TextItem $textItem): array
+    {
+        $newWords = $this->wordRepo->getNewWordsForText($textItem);
+        $alias = $this->wordAliasRepo->getAlias($newWords);
+
+        return $alias;
     }
 
     /**
@@ -101,6 +133,19 @@ class WordApp
             $word = $this->wordRepo->findOneBy(['name' => $word->getName()]);
             $relation = new TextWordRelation($textItem, $word);
             $this->textWordRelationRepo->createRelationOrIncreaseCounter($relation);
+        }
+    }
+
+    /**
+     * @param TextItem $textItem
+     */
+    public function conversionNewWords(TextItem $textItem): void
+    {
+        $newWords = $this->wordRepo->getNewWordsForText($textItem);
+        $aliases = $this->wordConversion->conversion($newWords);
+
+        foreach ($aliases as $alias) {
+            $this->wordAliasRepo->saveAlias($alias);
         }
     }
 

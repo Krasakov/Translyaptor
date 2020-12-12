@@ -1,7 +1,6 @@
 <?php
 namespace App\Repository;
 
-use App\Entity\TextItem;
 use App\Entity\TextWordRelation;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;

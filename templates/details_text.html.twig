@@ -50,13 +50,14 @@
                     <div class="clearfix"></div>
                     <table class="table table-sm table-striped table-hover js-table">
                         <tr>
-                            <th><input class="js-word-checkbox-all" type="checkbox"></th>
+                            <th class="css-checkbox"><input class="js-word-checkbox-all" type="checkbox"></th>
                             <th>Words</th>
-                            <th class="text-center">Actions</th>
+                            <th class="text-center">Conversion words</th>
+                            <th class="text-center css-action">Actions</th>
                         </tr>
                     {% for word in wordsAggregator.newWords %}
                         <tr>
-                            <td><input
+                            <td class="css-checkbox"><input
                                     class="js-word-checkbox"
                                     type="checkbox"
                                     name="wordIds[]"
@@ -64,7 +65,18 @@
                                     id="word-{{ word.id }}"
                                     data-word-id="{{ word.id }}"></td>
                             <td>{{ word.name }}</td>
-                            <td class="text-center">
+                            {% set mark = 0 %}
+                            {% for alias in aliases %}
+                                {% if word.id == alias.wordItem.id %}
+                                    {% set mark = alias.name %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if mark|length > 1 %}
+                                <td class="text-center">{{ mark }}</td>
+                            {% else %}
+                                <td class="text-center">{{ '' }}</td>
+                            {% endif %}
+                            <td class="text-center css-action">
                                 <a href="{{ path('move_to_black_list', {'word' :word.id, 'text' :textItem.id }) }}">
                                     <i class="fa fa-ban"></i>
                                 </a>
@@ -85,13 +97,13 @@
                     <div class="clearfix"></div>
                     <table class="table table-sm table-striped table-hover js-table">
                         <tr>
-                            <th><input class="js-word-checkbox-all" type="checkbox"></th>
-                            <th>Word</th>
-                            <th class="text-center">Actions</th>
+                            <th class="css-checkbox"><input class="js-word-checkbox-all" type="checkbox"></th>
+                            <th>Words</th>
+                            <th class="text-center css-action">Actions</th>
                         </tr>
                         {% for word in wordsAggregator.existedWords %}
                             <tr>
-                                <td><input
+                                <td class="css-checkbox"><input
                                         class="js-word-checkbox"
                                         type="checkbox"
                                         name="wordIds[]"
@@ -99,7 +111,7 @@
                                         id="word-{{ word.id }}"
                                         data-word-id="{{ word.id }}"></td>
                                 <td>{{ word.name }}</td>
-                                <td class="text-center">
+                                <td class="text-center css-action">
                                     <a href="{{ path('move_to_black_list', {'word' :word.id, 'text' :textItem.id }) }}">
                                         <i class="fa fa-ban"></i>
                                     </a>
@@ -120,13 +132,13 @@
                     <div class="clearfix"></div>
                     <table class="table table-sm table-striped table-hover js-table js-table-remove">
                         <tr>
-                            <th><input class="js-word-checkbox-all" type="checkbox"></th>
-                            <th>Word</th>
-                            <th class="text-center">Actions</th>
+                            <th class="css-checkbox"><input class="js-word-checkbox-all" type="checkbox"></th>
+                            <th>Words</th>
+                            <th class="text-center css-action">Actions</th>
                         </tr>
                         {% for word in wordsAggregator.blacklistedWords %}
                             <tr>
-                                <td><input
+                                <td class="css-checkbox"><input
                                         class="js-word-checkbox"
                                         type="checkbox"
                                         name="wordIds[]"
@@ -134,7 +146,7 @@
                                         id="word-{{ word.id }}"
                                         data-word-id="{{ word.id }}"></td>
                                 <td>{{ word.name }}</td>
-                                <td class="text-center">
+                                <td class="text-center css-action">
                                     <a href="{{ path('move_from_black_list', {'word' :word.id, 'text' :textItem.id }) }}">
                                         <i class="fa fa-reply"></i>
                                     </a>

@@ -22,9 +22,9 @@ class WordAggregator
     private $blacklistedWords;
 
     /**
-     * @param WordItem[] $newWords
-     * @param WordItem[] $existedWords
-     * @param WordItem[] $blacklistedWords
+     * @param WordItem[]    $newWords
+     * @param WordItem[]    $existedWords
+     * @param WordItem[]    $blacklistedWords
      */
     public function __construct(array $newWords, array $existedWords, array $blacklistedWords)
     {

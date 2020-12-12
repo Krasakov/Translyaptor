@@ -11,10 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route(path="/text")
+ */
 class TextController extends AbstractController
 {
     /**
-     * @Route(path="/text/create", methods={"GET", "POST"}, name="create_text")
+     * @Route(path="/create", methods={"GET", "POST"}, name="create_text")
      * @param Request $request
      * @param TextApp $textApp
      * @return Response
@@ -27,10 +30,14 @@ class TextController extends AbstractController
         if ($request->isMethod('POST')) {
             try {
                 $form->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
+                if ($form->isValid()) {
                     /** @var TextItem $textItem */
                     $textItem = $form->getData();
                     $textItem = $textApp->processText($textItem->getText());
+
+                    $this->addFlash('success', 'Text saved successful!');
+
+                    return $this->redirectToRoute('text_details', ['id' => $textItem->getId()]);
                 }
             } catch (ValidationException $e) {
                 foreach ($e->getMessages() as $message) {
@@ -43,17 +50,13 @@ class TextController extends AbstractController
 
                 return $this->redirectToRoute('create_text');
             }
-
-            $this->addFlash('success', 'Text saved successful!');
-
-            return $this->redirectToRoute('text_details', ['id' => $textItem->getId()]);
         }
 
         return $this->render('work_with_text.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @Route(path="/", methods={"GET"}, name="text_list")
+     * @Route(path="/list", methods={"GET"}, name="text_list")
      * @param TextApp $textApp
      * @return Response
      */
@@ -67,7 +70,7 @@ class TextController extends AbstractController
     }
 
     /**
-     * @Route(path="/text/{id}/delete", methods={"GET"}, name="text_delete")
+     * @Route(path="/{id}/delete", methods={"GET"}, name="text_delete")
      * @param TextApp $textApp
      * @param TextItem $textItem
      * @return Response
@@ -81,7 +84,7 @@ class TextController extends AbstractController
     }
 
     /**
-     * @Route(path="/text/{id}", methods={"GET"}, name="text_details", requirements={"id":"\d+"})
+     * @Route(path="/{id}", methods={"GET"}, name="text_details", requirements={"id":"\d+"})
      * @param WordApp $wordApp
      * @param TextItem $textItem
      * @return Response
@@ -89,10 +92,12 @@ class TextController extends AbstractController
     public function details(WordApp $wordApp, TextItem $textItem): Response
     {
         $wordsAggregator = $wordApp->getSeparatedWordsForText($textItem);
+        $alias = $wordApp->getAliasForText($textItem);
 
         return $this->render('details_text.html.twig', [
             'textItem' => $textItem,
             'wordsAggregator' => $wordsAggregator,
+            'aliases' => $alias,
         ]);
     }
 }

@@ -17,7 +17,7 @@
             <header>
                 <div class="row header">
                     <div class="col-2">
-                        <a href="{{ path('text_list') }}"><img class="logo" src="/images/logo.png"></a>
+                        <a href="{{ path('start') }}"><img class="logo" src="/images/logo.png"></a>
                     </div>
                     <div class="col-8 text-center">
                         <a
@@ -34,10 +34,10 @@
                     <div class="col-2 authorization-block">
                         <a
                             class="btn btn-secondary authorization-links"
-                            href="#">Sing in
+                            href="{{ path('user_registration') }}">Sign up
                         </a><a
                             class="btn btn-secondary authorization-links"
-                            href="#">Sing up
+                            href="{{ path('app_login') }}">Sign in
                         </a>
                     </div>
                 </div>

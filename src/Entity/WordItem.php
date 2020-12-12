@@ -40,12 +40,20 @@ class WordItem
     private $textsRelations;
 
     /**
+     * @var ArrayCollection|WordAlias[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\WordAlias", mappedBy="wordItem")
+     */
+    private $wordAlias;
+
+    /**
      * @param string $name
      */
     public function __construct(string $name)
     {
         $this->name = $name;
         $this->textsRelations = new ArrayCollection();
+        $this->wordAlias = new ArrayCollection();
     }
 
     /**

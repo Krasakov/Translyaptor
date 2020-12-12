@@ -41,7 +41,7 @@ class WordRepository extends EntityRepository
      * @param TextItem $textItem
      * @return WordItem[]
      */
-    public function getNewWordsForText(TextItem $textItem):array
+    public function getNewWordsForText(TextItem $textItem): array
     {
         $subQuery = $this->createQueryBuilder('sub_w');
         $subQuery
@@ -64,7 +64,7 @@ class WordRepository extends EntityRepository
      * @param TextItem $textItem
      * @return WordItem[]
      */
-    public function getExistedWordsForText(TextItem $textItem):array
+    public function getExistedWordsForText(TextItem $textItem): array
     {
         $subQuery = $this->createQueryBuilder('sub_w');
         $subQuery
@@ -137,9 +137,8 @@ class WordRepository extends EntityRepository
         $stmt = $conn->prepare('
             DELETE w FROM word_item AS w
             LEFT JOIN text_word_relation AS r ON w.id = r.word_item_id
-            WHERE r.word_item_id IS NULL
+            WHERE r.text_item_id IS NULL
         ');
-
         $stmt->execute();
     }
 

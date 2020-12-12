@@ -84,13 +84,15 @@ class TextApp
             $this->wordApp->processText($textItem);
 
             $this->em->commit();
-
-            return $textItem;
         } catch (\Throwable $e) {
             $this->em->rollback();
 
             throw $e;
         }
+
+        $this->wordApp->conversionNewWords($textItem);
+
+        return $textItem;
     }
 
     /**

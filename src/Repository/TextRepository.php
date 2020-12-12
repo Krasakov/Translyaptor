@@ -30,9 +30,7 @@ class TextRepository extends EntityRepository
             ->leftJoin('t.wordsRelations', 'r')
             ->groupBy('t.id');
 
-        $result = $qb->getQuery()->getResult();
-
-        return $result;
+        return $qb->getQuery()->getResult();
     }
 
     /**
