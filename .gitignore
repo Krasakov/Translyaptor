@@ -4,6 +4,7 @@
 /.env.local.php
 /.env.*.local
 /.docker/mysql
+/.docker/nginx/logs
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
