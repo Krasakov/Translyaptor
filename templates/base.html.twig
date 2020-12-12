@@ -4,7 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" crossorigin="anonymous">
+            <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
             <link rel="stylesheet" href="{{ asset('css/base.css') }}">
         {% endblock %}
         <title>{% block title %}Translyaptor{% endblock %}</title>
@@ -16,32 +17,43 @@
             <header>
                 <div class="row header">
                     <div class="col-2">
-                        <a class="btn" style="color: red" href="{{ path('index') }}" role="button">LOGO</a>
+                        <a href="{{ path('start') }}"><img class="logo" src="/images/logo.png"></a>
                     </div>
                     <div class="col-8 text-center">
                         <a
                             class="menu-links"
-                            href="{{ path('create_words') }}">Work with text
+                            href="{{ path('text_list') }}">Work with text
                         </a><a
                             class="menu-links"
                             href="#">Work with words
                         </a><a
                             class="menu-links"
-                            href="#">Analytics
+                            href="{{ path('words_show') }}">List words
                         </a>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 authorization-block">
                         <a
-                            class="authorization-links"
-                            href="#">Sing in
+                            class="btn btn-secondary authorization-links"
+                            href="{{ path('user_registration') }}">Sign up
                         </a><a
-                            class="authorization-links"
-                            href="#">Sing up
+                            class="btn btn-secondary authorization-links"
+                            href="{{ path('app_login') }}">Sign in
                         </a>
                     </div>
                 </div>
             </header>
             <main>
+                <div class="row">
+                    <div class="col-12">
+                        {% for type, messages in app.flashes() %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{type}}" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
                 <div class="row main">
                     {% block body %}{% endblock %}
                 </div>
@@ -53,17 +65,16 @@
                         <a class="info-links" href="#">Contact us</a>
                         <a class="info-links" href="#">Terms of use</a>
                     </div>
-                    <div class="col-2 offset-8 text-right" style="padding-top: 70px; font-size: 11pt; color: #6c757d">
+                    <div class="col-2 offset-8 text-right css-copyright">
                         &#169 2020
                     </div>
                 </div>
             </footer>
         </div>
         {% block javascripts %}
-            <script src="{{ asset('js/jquery-3.2.1.slim.min.js') }}" crossorigin="anonymous"></script>
+            <script src="{{ asset('js/jquery-3.5.0.min.js') }}" crossorigin="anonymous"></script>
             <script src="{{ asset('js/popper.min.js') }}" crossorigin="anonymous"></script>
-            <script src="{{ asset('js/bootstrap.min.js') }}" crossorigin="anonymous">
-            </script>
+            <script src="{{ asset('js/bootstrap.min.js') }}" crossorigin="anonymous"></script>
         {% endblock %}
     </body>
 </html>

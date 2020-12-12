@@ -1,0 +1,18 @@
+p {
+    padding-top: 20px;
+    text-indent: 1.5em;
+    text-align: justify;
+}
+
+.css-button {
+    margin: 15px 2px;
+}
+
+.css-checkbox {
+    width: 100px;
+    padding-left: 25px !important;
+}
+
+.css-action {
+    width: 150px;
+}

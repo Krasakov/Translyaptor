@@ -1,0 +1,43 @@
+{% block body %}
+<div class="col-12">
+    {{ form_start(form,{'method': 'post'}) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.plainPassword.first) }}
+    {{ form_row(form.plainPassword.second) }}
+    <input class="btn-sm btn-primary" type="submit" value="Register">
+    <div class="clearfix"></div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/text-work.css') }}">
+{% endblock %}
+{% block title %}Log in!{% endblock %}
+{% block body %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+    <button class="btn btn-lg btn-primary" type="submit">
+        Sign in
+    </button>
+</form>
+{% endblock %}

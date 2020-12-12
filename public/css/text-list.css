@@ -1,0 +1,17 @@
+.css-button-add-new {
+    margin: 15px 2px;
+    text-align: right;
+}
+.css-td-text {
+    width: 760px;
+    text-indent: 1.5em;
+    text-align: justify;
+}
+
+.css-td-date {
+    width: 110px;
+}
+
+.css-pencil {
+    padding-left: 10px;
+}

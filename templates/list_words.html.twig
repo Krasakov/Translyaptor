@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="col-12">
+        {% for word in words %}
+            {{ word.name }}
+        {% endfor %}
+    </div>
+{% endblock %}

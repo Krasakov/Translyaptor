@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/text-work.css') }}">
+{% endblock %}
+{% block title %}Log in!{% endblock %}
+{% block body %}
+    <div>
+        <form class="js-form-login" action="{{ path('app_login') }}">
+            <div>
+                <input class="js-email" type="email" name="email" placeholder="email">
+                <div class="error d-none">Введите почту</div>
+            </div>
+            <div>
+                <input class="js-password" type="password" name="password" placeholder="password">
+                <div class="error d-none">Введите пароль</div>
+            </div>
+            <input type="submit" value="Sing in">
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {% parent() %}
+    <script>
+        (function () {
+            let formLogin = $('.js-form-login');
+            let email = formLogin.find('.js-email');
+            let password = formLogin.find('.js-password');
+            let action = formLogin.attr('action');
+
+            formLogin.submit(function(e) {
+                e.preventDefault();
+
+                let data = {
+                    email: email.val(),
+                    password: password.val()
+                };
+
+                $.ajax({
+                    url: action,
+                    type: 'post',
+                    data: data,
+                    success: function(response) {
+                        if(!!response.redirect) {
+                            window.location.href = response.redirect;
+                            return;
+                        }
+                        alert('Вы в системе.');
+                    }
+                });
+            });
+        })();
+    </script>
+{% endblock %}

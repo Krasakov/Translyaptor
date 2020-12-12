@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/details.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="col-12">
+        <p>{{ textItem.text }}</p>
+    </div>
+    <div class="col-12">
+        <p>Words</p>
+        {% for word in words %}
+            {{ word.name }}
+        {% endfor %}
+    </div>
+{% endblock %}
