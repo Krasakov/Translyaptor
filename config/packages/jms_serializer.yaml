@@ -1,0 +1,14 @@
+jms_serializer:
+#    visitors:
+#        json_serialization:
+#            options: 0 # json_encode options bitmask, suggested JSON_PRETTY_PRINT in development
+#            depth: 512
+#        json_deserialization:
+#            options: 0
+#    metadata:
+#        auto_detection: false
+#        directories:
+#            any-name:
+#                namespace_prefix: "My\\FooBundle"
+#                path: "@MyFooBundle/Resources/config/serializer"
+#         
